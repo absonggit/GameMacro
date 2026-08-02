@@ -8,7 +8,8 @@ public sealed class CompactWorkspaceDefinitionTests
         var root = FindRepositoryRoot();
         var mainWindow = File.ReadAllText(Path.Combine(root, "src", "GameMacro.App", "MainWindow.xaml"));
 
-        Assert.Contains("Title=\"按键助手 v1.0.2\"", mainWindow);
+        Assert.Contains("Title=\"按键助手 v1.0.3\"", mainWindow);
+        Assert.Contains("Text=\"v1.0.3\"", mainWindow);
         Assert.Contains("x:Name=\"LibraryPanel\"", mainWindow);
         Assert.DoesNotContain("ToggleSkillLibrary_Click", mainWindow);
         Assert.DoesNotContain("Content=\"技能库\"", mainWindow);
@@ -18,12 +19,14 @@ public sealed class CompactWorkspaceDefinitionTests
     }
 
     [Fact]
-    public void Skill_library_uses_five_column_icon_slots_without_a_close_button()
+    public void Skill_library_wraps_slots_tightly_and_scopes_hover_to_one_slot()
     {
         var root = FindRepositoryRoot();
         var library = File.ReadAllText(Path.Combine(root, "src", "GameMacro.App", "SkillLibraryPanel.xaml"));
 
-        Assert.Contains("<UniformGrid Columns=\"5\"/>", library);
+        Assert.Contains("<ItemsPanelTemplate><WrapPanel Orientation=\"Horizontal\"/></ItemsPanelTemplate>", library);
+        Assert.Contains("<Trigger SourceName=\"TemplateSlot\" Property=\"IsMouseOver\" Value=\"True\">", library);
+        Assert.DoesNotContain("AncestorType=ContentPresenter", library);
         Assert.Contains("Width=\"52\" Height=\"66\"", library);
         Assert.Contains("Width=\"44\" Height=\"44\"", library);
         Assert.DoesNotContain("Close_Click", library);

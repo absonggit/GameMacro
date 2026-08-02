@@ -76,7 +76,7 @@
                           Padding="1">
                 <ItemsControl x:Name="TemplatesList">
                     <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate><UniformGrid Columns="5"/></ItemsPanelTemplate>
+                        <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -122,11 +122,10 @@
                                 </Grid>
                             </Border>
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver}"
-                                             Value="True">
+                                <Trigger SourceName="TemplateSlot" Property="IsMouseOver" Value="True">
                                     <Setter TargetName="DeleteTemplateButton" Property="Opacity" Value="1"/>
                                     <Setter TargetName="TemplateSlot" Property="BorderBrush" Value="#54749B"/>
-                                </DataTrigger>
+                                </Trigger>
                                 <DataTrigger Binding="{Binding IsAdded}" Value="True">
                                     <Setter TargetName="TemplateSlot" Property="BorderBrush" Value="#3F78BF"/>
                                 </DataTrigger>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:GameMacro.App.Converters"
         xmlns:local="clr-namespace:GameMacro.App"
-        Title="按键助手 v1.0.2" Icon="Assets/AppIcon.ico"
+        Title="按键助手 v1.0.3" Icon="Assets/AppIcon.ico"
         Width="1420" Height="820" MinWidth="1180" MinHeight="680"
         Background="#0B1018" Foreground="#EAF0FA"
         FontFamily="Microsoft YaHei UI" FontSize="13"
@@ -101,7 +101,7 @@
                         </Border>
                         <StackPanel>
                             <TextBlock Text="按键助手" FontSize="16" FontWeight="SemiBold"/>
-                            <TextBlock Text="v1.0.2" FontSize="11" Foreground="{StaticResource Muted}"/>
+                            <TextBlock Text="v1.0.3" FontSize="11" Foreground="{StaticResource Muted}"/>
                         </StackPanel>
                     </StackPanel>
                     <TextBlock Text="方案" Style="{StaticResource SectionTitle}" Margin="0,16,0,3"/>

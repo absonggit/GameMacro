@@ -1,4 +1,4 @@
-# 按键助手 v1.0.2
+# 按键助手 v1.0.3
 
 这是一个 Windows WPF 图标识别宏。程序持续扫描游戏中的一个动态技能图标区域，识别到已绑定图标后持续发送对应按键；图标变化时，在下一次扫描立即切换按键。
 
@@ -48,12 +48,13 @@
 - 浮窗只在目标游戏前台显示；点击浮窗启停后会自动把输入焦点还给游戏。
 - 每个方案最多保存 32 个图标映射。
 - 主窗口的技能卡片会随窗口宽度自动换行，不再使用横向滚动条。
+- 技能库图标从左到右紧密换行，不会再把少量技能平均撑满整个高度；删除按钮只在当前悬停的图标上显示。
 
 ## 版本更新
 
 - 从 v1.0.2 开始，程序启动后会静默检查 GitHub 最新正式版；发现更高版本时提示前往下载，断网或 GitHub 不可用不会影响主程序。
 - 下载新版 `GameMacro-Setup.exe` 后直接运行即可覆盖升级，方案和技能库保存在 `%LOCALAPPDATA%\GameMacro`，不会随升级删除。
-- 已安装的 v1.0.1 没有更新检查代码，需要手动安装一次 v1.0.2；之后才能收到 v1.0.3 及更高版本提示。
+- 已安装的 v1.0.1 没有更新检查代码，需要手动安装一次 v1.0.2 或更高版本；v1.0.2 会自动提示本次 v1.0.3 更新。
 
 ## 图标扫描建议
 
@@ -87,7 +88,7 @@ powershell -ExecutionPolicy Bypass -File scripts/build-installer.ps1
 指定版本号：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/build-installer.ps1 -Version 1.0.2
+powershell -ExecutionPolicy Bypass -File scripts/build-installer.ps1 -Version 1.0.3
 ```
 
 最终安装包位于：
