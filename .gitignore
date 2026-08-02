@@ -6,3 +6,6 @@ artifacts/
 bin/
 obj/
 *.user
+.agents/
+.dotnet/
+docs/superpowers/
