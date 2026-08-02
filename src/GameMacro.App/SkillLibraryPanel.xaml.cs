@@ -19,7 +19,6 @@ public partial class SkillLibraryPanel : UserControl
     private SkillLibrary? _library;
     private HashSet<Guid> _addedTemplateIds = [];
 
-    public event EventHandler? CloseRequested;
     public event EventHandler? BatchScanRequested;
     public event EventHandler? SingleCaptureRequested;
     public event EventHandler? LibraryChanged;
@@ -61,7 +60,6 @@ public partial class SkillLibraryPanel : UserControl
     }
 
     private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) => RefreshCards();
-    private void Close_Click(object sender, RoutedEventArgs e) => CloseRequested?.Invoke(this, EventArgs.Empty);
     private void BatchScan_Click(object sender, RoutedEventArgs e) => BatchScanRequested?.Invoke(this, EventArgs.Empty);
     private void SingleCapture_Click(object sender, RoutedEventArgs e) => SingleCaptureRequested?.Invoke(this, EventArgs.Empty);
 

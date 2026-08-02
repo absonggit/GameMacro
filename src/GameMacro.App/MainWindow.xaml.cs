@@ -1,6 +1,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -11,6 +14,7 @@ using GameMacro.App.Detection;
 using GameMacro.App.Overlay;
 using GameMacro.App.Platform;
 using GameMacro.App.Services;
+using GameMacro.App.Updates;
 using GameMacro.App.ViewModels;
 using GameMacro.Core.Models;
 
@@ -31,6 +35,7 @@ public partial class MainWindow : Window
     private readonly PhysicalKeyboardMonitor _physicalKeyboardMonitor = new();
     private readonly DispatcherTimer _automationTimer = new();
     private readonly DispatcherTimer _overlayTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
+    private static readonly HttpClient UpdateHttpClient = new() { Timeout = TimeSpan.FromSeconds(5) };
     private readonly WindowsSkillCaptureService _capture;
     private readonly JsonProfileStore _store;
     private readonly JsonSkillLibraryStore _skillLibraryStore;
@@ -62,7 +67,6 @@ public partial class MainWindow : Window
         _store = new(Path.Combine(appDataPath, "Profiles"));
         _skillLibraryStore = new(Path.Combine(appDataPath, "SkillLibrary.json"));
         ProfilesList.ItemsSource = _profiles;
-        LibraryPanel.CloseRequested += (_, _) => LibraryPanel.Visibility = Visibility.Collapsed;
         LibraryPanel.BatchScanRequested += (_, _) => ScanSource_Click(LibraryPanel, new RoutedEventArgs());
         LibraryPanel.SingleCaptureRequested += (_, _) => CaptureSingleIcon_Click(LibraryPanel, new RoutedEventArgs());
         LibraryPanel.LibraryChanged += LibraryPanel_LibraryChanged;
@@ -114,6 +118,31 @@ public partial class MainWindow : Window
         _source.AddHook(WindowProc);
         RegisterProfileHotkey();
         _overlayTimer.Start();
+        _ = CheckForUpdatesAsync();
+    }
+
+    private async Task CheckForUpdatesAsync()
+    {
+        try
+        {
+            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(1, 0, 2);
+            var update = await new GitHubReleaseUpdateChecker(UpdateHttpClient)
+                .CheckAsync(currentVersion, CancellationToken.None);
+            if (update is null || !IsLoaded) return;
+
+            var dialog = new UpdateAvailableWindow(update) { Owner = this };
+            if (dialog.ShowDialog() != true) return;
+
+            var downloadPage = update.InstallerDownload ?? update.ReleasePage;
+            Process.Start(new ProcessStartInfo(downloadPage.AbsoluteUri)
+            {
+                UseShellExecute = true
+            });
+        }
+        catch
+        {
+            // 更新检查永远不能影响主程序启动和识别。
+        }
     }
 
     private static MacroProfile CreateDefaultProfile() => new()
@@ -234,14 +263,6 @@ public partial class MainWindow : Window
         if (sender is not Button { DataContext: PendingIconMapping mapping }) return;
         _pendingMappings.Remove(mapping);
         PendingStatusText.Text = _pendingMappings.Count == 0 ? "尚无待绑定图标" : $"待绑定 {_pendingMappings.Count} 个技能";
-        RefreshLibraryPanel();
-    }
-
-    private void ToggleSkillLibrary_Click(object sender, RoutedEventArgs e)
-    {
-        LibraryPanel.Visibility = LibraryPanel.Visibility == Visibility.Visible
-            ? Visibility.Collapsed
-            : Visibility.Visible;
         RefreshLibraryPanel();
     }
 

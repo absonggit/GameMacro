@@ -15,8 +15,9 @@ public sealed class InstallerDefinitionTests
         Assert.Contains(@"DefaultDirName={localappdata}\Programs\GameMacro", script);
         Assert.Contains("OutputBaseFilename=GameMacro-Setup", script);
         Assert.Contains("Uninstallable=yes", script);
-        Assert.Contains("#define MyAppVersion \"1.0.1\"", script);
+        Assert.Contains("#define MyAppVersion \"1.0.2\"", script);
         Assert.Contains("#define MyAppName \"按键助手\"", script);
+        Assert.Contains("AppId={{7A054983-3708-4C13-B76E-352A3719B160}", script);
         Assert.Contains(@"{autoprograms}\{#MyAppName}", script);
         Assert.Contains(@"{autodesktop}\{#MyAppName}", script);
         Assert.DoesNotContain(@"GameMacro\Profiles", script);
@@ -42,9 +43,9 @@ public sealed class InstallerDefinitionTests
         Assert.Contains("IconFilename: \"{app}\\{#MyAppExeName}\"; IconIndex: 0", installer);
         Assert.Contains("<Product>按键助手</Product>", project);
         Assert.Contains("<AssemblyTitle>按键助手</AssemblyTitle>", project);
-        Assert.Contains("<Version>1.0.1</Version>", project);
-        Assert.Contains("<AssemblyVersion>1.0.1.0</AssemblyVersion>", project);
-        Assert.Contains("<FileVersion>1.0.1.0</FileVersion>", project);
+        Assert.Contains("<Version>1.0.2</Version>", project);
+        Assert.Contains("<AssemblyVersion>1.0.2.0</AssemblyVersion>", project);
+        Assert.Contains("<FileVersion>1.0.2.0</FileVersion>", project);
     }
 
     private static string FindRepositoryRoot()
