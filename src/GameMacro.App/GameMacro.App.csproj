@@ -17,10 +17,10 @@
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <Product>按键助手</Product>
     <AssemblyTitle>按键助手</AssemblyTitle>
-    <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <InformationalVersion>1.0.1</InformationalVersion>
+    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <InformationalVersion>1.0.2</InformationalVersion>
   </PropertyGroup>
 
 </Project>
