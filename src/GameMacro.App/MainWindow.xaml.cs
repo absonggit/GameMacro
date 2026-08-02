@@ -125,7 +125,7 @@ public partial class MainWindow : Window
     {
         try
         {
-            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(1, 0, 2);
+            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(1, 0, 3);
             var update = await new GitHubReleaseUpdateChecker(UpdateHttpClient)
                 .CheckAsync(currentVersion, CancellationToken.None);
             if (update is null || !IsLoaded) return;
