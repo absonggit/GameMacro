@@ -75,8 +75,14 @@ public partial class MainWindow : Window
         _automationTimer.Tick += async (_, _) => await AutomationTickAsync();
         _overlayTimer.Tick += async (_, _) => await OverlayTickAsync();
         PreviewKeyDown += MainWindow_PreviewKeyDown;
+        SourceInitialized += MainWindow_SourceInitialized;
         Loaded += MainWindow_Loaded;
         Closing += MainWindow_Closing;
+    }
+
+    private void MainWindow_SourceInitialized(object? sender, EventArgs e)
+    {
+        WindowAppearanceService.ApplyDarkTitleBar(this);
     }
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -125,7 +131,7 @@ public partial class MainWindow : Window
     {
         try
         {
-            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(1, 0, 3);
+            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(1, 0, 4);
             var update = await new GitHubReleaseUpdateChecker(UpdateHttpClient)
                 .CheckAsync(currentVersion, CancellationToken.None);
             if (update is null || !IsLoaded) return;

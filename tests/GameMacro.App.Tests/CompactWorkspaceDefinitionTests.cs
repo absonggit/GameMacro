@@ -8,8 +8,8 @@ public sealed class CompactWorkspaceDefinitionTests
         var root = FindRepositoryRoot();
         var mainWindow = File.ReadAllText(Path.Combine(root, "src", "GameMacro.App", "MainWindow.xaml"));
 
-        Assert.Contains("Title=\"按键助手 v1.0.3\"", mainWindow);
-        Assert.Contains("Text=\"v1.0.3\"", mainWindow);
+        Assert.Contains("Title=\"按键助手 v1.0.4\"", mainWindow);
+        Assert.Contains("Text=\"v1.0.4\"", mainWindow);
         Assert.Contains("x:Name=\"LibraryPanel\"", mainWindow);
         Assert.DoesNotContain("ToggleSkillLibrary_Click", mainWindow);
         Assert.DoesNotContain("Content=\"技能库\"", mainWindow);
