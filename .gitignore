@@ -1,0 +1,8 @@
+.appdata/
+.dotnet-home/
+.nuget/
+.superpowers/
+artifacts/
+bin/
+obj/
+*.user

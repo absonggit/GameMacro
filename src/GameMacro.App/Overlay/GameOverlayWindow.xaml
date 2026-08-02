@@ -1,0 +1,29 @@
+<Window x:Class="GameMacro.App.Overlay.GameOverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="200" Height="40"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" ShowActivated="False"
+        SnapsToDevicePixels="True">
+    <Border Background="#E91A1E26" BorderBrush="#657188" BorderThickness="1"
+            CornerRadius="6" Padding="4">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="18"/>
+                <ColumnDefinition Width="96"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="#303744" CornerRadius="3" Margin="0,0,3,0"
+                    Cursor="SizeAll" MouseLeftButtonDown="DragArea_MouseLeftButtonDown">
+                <TextBlock Text="⠿" Foreground="#AEB8C8" FontSize="12"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ComboBox x:Name="ProfileSelector" Grid.Column="1" Margin="0,0,3,0" Height="28"
+                      DisplayMemberPath="Name" SelectionChanged="ProfileSelector_SelectionChanged"
+                      VerticalContentAlignment="Center" FontSize="12" Padding="4,0"/>
+            <Button Grid.Column="2" x:Name="ToggleButton" Content="启动 F5" Padding="2,0"
+                    Click="ToggleButton_Click" Background="#4C8DFF" Foreground="White"
+                    BorderBrush="#78A9FF" BorderThickness="1" FontSize="11" FontWeight="SemiBold"/>
+        </Grid>
+    </Border>
+</Window>

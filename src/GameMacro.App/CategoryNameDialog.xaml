@@ -1,0 +1,21 @@
+<Window x:Class="GameMacro.App.CategoryNameDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="职业分类" Width="360" Height="150" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" Background="#1A1E26" Foreground="#F4F7FC"
+        ShowInTaskbar="False">
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="职业分类名称" Margin="0,0,0,6"/>
+        <TextBox x:Name="NameBox" Grid.Row="1" Height="32" Padding="8,4"
+                 Background="#12161D" Foreground="#F4F7FC" BorderBrush="#3A4556"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="取消" Width="72" Margin="4" Click="Cancel_Click"/>
+            <Button Content="确定" Width="72" Margin="4" Background="#4C8DFF" Click="Accept_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

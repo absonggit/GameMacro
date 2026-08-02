@@ -1,0 +1,171 @@
+<Window x:Class="GameMacro.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:GameMacro.App.Converters"
+        xmlns:local="clr-namespace:GameMacro.App"
+        Title="按键助手 v1.0.1" Icon="Assets/AppIcon.ico" Width="1160" Height="720" MinWidth="980" MinHeight="620"
+        Background="#111318" Foreground="#E8ECF4" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <SolidColorBrush x:Key="Panel" Color="#1A1E26"/>
+        <SolidColorBrush x:Key="Panel2" Color="#222833"/>
+        <SolidColorBrush x:Key="Accent" Color="#4C8DFF"/>
+        <converters:Base64PngImageConverter x:Key="Base64PngImageConverter"/>
+        <Style TargetType="Button"><Setter Property="Background" Value="#2B3340"/><Setter Property="Foreground" Value="#F4F7FC"/><Setter Property="BorderBrush" Value="#3A4556"/><Setter Property="Padding" Value="12,7"/><Setter Property="Margin" Value="4"/><Setter Property="Cursor" Value="Hand"/></Style>
+        <Style TargetType="TextBox"><Setter Property="Background" Value="#12161D"/><Setter Property="Foreground" Value="#F4F7FC"/><Setter Property="BorderBrush" Value="#374151"/><Setter Property="Padding" Value="8,6"/><Setter Property="Margin" Value="4"/></Style>
+        <Style TargetType="ComboBox"><Setter Property="Background" Value="#F4F4F4"/><Setter Property="Foreground" Value="#101318"/><Setter Property="Padding" Value="8,5"/><Setter Property="Margin" Value="4"/></Style>
+        <Style TargetType="GroupBox"><Setter Property="BorderBrush" Value="#303846"/><Setter Property="Padding" Value="10"/><Setter Property="Margin" Value="0,0,0,9"/></Style>
+    </Window.Resources>
+
+    <Grid Margin="14">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="220"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Background="{StaticResource Panel}" CornerRadius="10" Padding="12">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Bottom"><Button Content="＋ 新建方案" Click="NewProfile_Click"/><Button Content="删除方案" Click="DeleteProfile_Click"/></StackPanel>
+                <TextBlock DockPanel.Dock="Top" Text="方案列表" FontSize="20" FontWeight="SemiBold" Margin="6,4,6,10"/>
+                <ListBox x:Name="ProfilesList" Background="Transparent" BorderThickness="0"
+                         HorizontalContentAlignment="Stretch" SelectionChanged="ProfilesList_SelectionChanged">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="ProfileCard" Background="#252B35" BorderBrush="#3B4658"
+                                    BorderThickness="1" CornerRadius="7" Padding="12" Margin="2,4">
+                                <TextBlock Text="{Binding Name}" Foreground="#F4F7FC" FontWeight="SemiBold"
+                                           FontSize="14" TextTrimming="CharacterEllipsis"/>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="ProfileCard" Property="Background" Value="#18354B"/>
+                                    <Setter TargetName="ProfileCard" Property="BorderBrush" Value="#38A8E8"/>
+                                    <Setter TargetName="ProfileCard" Property="BorderThickness" Value="2"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="145"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="{StaticResource Panel}" CornerRadius="10" Padding="9" Margin="0,0,0,9">
+                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition Width="3*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <TextBox x:Name="ProfileNameBox" Grid.Column="0"/><ComboBox x:Name="WindowCombo" Grid.Column="1" DisplayMemberPath="DisplayName" SelectionChanged="WindowCombo_SelectionChanged"/>
+                    <Button Grid.Column="2" Content="刷新窗口" Click="RefreshWindows_Click"/>
+                    <Button Grid.Column="3" Content="导入" Click="ImportProfile_Click"/>
+                    <Button Grid.Column="4" Content="导出" Click="ExportProfile_Click"/>
+                    <Button Grid.Column="5" Content="保存方案" Background="{StaticResource Accent}" Click="SaveProfile_Click"/>
+                    <Button Grid.Column="6" Content="技能库" Click="ToggleSkillLibrary_Click"/>
+                </Grid>
+            </Border>
+
+            <GroupBox Grid.Row="1" Header="区域设置" Background="{StaticResource Panel}">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Width="82" Height="82" Background="#10141B" BorderBrush="#40506A" BorderThickness="1" CornerRadius="6">
+                        <Grid><TextBlock Text="动态区域" Foreground="#7F8998" HorizontalAlignment="Center" VerticalAlignment="Center"/><Image x:Name="RegionPreview" Stretch="UniformToFill"/></Grid>
+                    </Border>
+                    <Button Grid.Column="1" Content="框选动态区域" Click="SelectRegion_Click" VerticalAlignment="Center" Background="{StaticResource Accent}"/>
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <TextBlock x:Name="RegionStatusText" Text="尚未框选动态区域" Foreground="#74A7FF" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="SourceStatusText" Text="技能模板由右侧技能库统一管理" Foreground="#AEB8C8" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Row="2" Header="技能图标与按键映射" Background="{StaticResource Panel}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock x:Name="PendingStatusText" Text="尚无技能图标" Foreground="#74A7FF" VerticalAlignment="Center" Margin="8"/>
+                        <Button Content="保存全部映射" Click="SaveAllMappings_Click" Background="{StaticResource Accent}"/>
+                    </StackPanel>
+                    <ListBox x:Name="MappingsList" Background="Transparent" BorderThickness="0"
+                             AllowDrop="True" DragOver="MappingsList_DragOver" Drop="MappingsList_Drop"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.CanContentScroll="False"
+                             HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate></ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="98" Height="112" Background="#252B35" BorderBrush="#3B4658" BorderThickness="1" CornerRadius="7" Padding="5" Margin="4">
+                                    <Grid>
+                                        <Grid.RowDefinitions><RowDefinition Height="68"/><RowDefinition Height="34"/></Grid.RowDefinitions>
+                                        <Button Grid.RowSpan="2" Content="×" Click="DeletePendingMapping_Click" Width="19" Height="19" Padding="0" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="5" Background="#A84242" BorderBrush="#D86666"/>
+                                        <Border Grid.Row="0" Width="62" Height="62" Background="#10141B" BorderBrush="#455267" BorderThickness="1" CornerRadius="4">
+                                            <Grid>
+                                                <Image Source="{Binding PreviewPng, Converter={StaticResource Base64PngImageConverter}}" Stretch="UniformToFill"/>
+                                                <Border Background="#D0341F24" CornerRadius="3" Padding="4,2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsMissingTemplate}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="模板缺失" Foreground="#FFD7D7" FontSize="11" FontWeight="SemiBold"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        <Button Grid.Row="1" Click="AssignKey_Click" Padding="5,3" FontWeight="Bold">
+                                            <TextBlock><Run Text="按键 "/><Run Text="{Binding ActionKey, FallbackValue=未设}"/></TextBlock>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </GroupBox>
+
+            <Border Grid.Row="3" Background="{StaticResource Panel2}" CornerRadius="9" Padding="9">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <DockPanel Grid.Row="0">
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                            <CheckBox x:Name="ShowOverlayCheckBox" Content="显示游戏浮窗" IsChecked="True"
+                                      Foreground="#F4F7FC" FontWeight="SemiBold" FontSize="13"
+                                      VerticalAlignment="Center" Margin="8,0" Checked="ShowOverlayCheckBox_Changed"
+                                      Unchecked="ShowOverlayCheckBox_Changed"/>
+                            <TextBlock Text="扫描间隔(ms)" VerticalAlignment="Center" Margin="8,0,2,0" Foreground="#AEB8C8"/><TextBox x:Name="ScanIntervalBox" Width="65" Text="20"/>
+                            <TextBlock Text="启动/停止热键" VerticalAlignment="Center" Margin="8,0,2,0" Foreground="#D6DEEA"/>
+                            <Button x:Name="ToggleHotkeyButton" Content="按键 F5" MinWidth="92"
+                                    Background="#2B5D91" Click="ToggleHotkeyCapture_Click"/>
+                        </StackPanel>
+                        <TextBlock x:Name="StatusText" Text="状态：已停止" VerticalAlignment="Center" FontSize="14" TextTrimming="CharacterEllipsis"/>
+                    </DockPanel>
+                    <DockPanel Grid.Row="1" Margin="0,5,0,0">
+                        <TextBlock DockPanel.Dock="Left" Text="优先打断键" Foreground="#D6DEEA" VerticalAlignment="Center" Margin="4,0,7,0"/>
+                        <Button DockPanel.Dock="Right" Content="＋ 添加打断键" Click="AddInterruptKey_Click" Padding="9,4"/>
+                        <ItemsControl x:Name="InterruptKeysList" VerticalAlignment="Center">
+                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#2B3340" BorderBrush="#43506A" BorderThickness="1" CornerRadius="5" Margin="2" Padding="7,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <Button Content="×" Click="DeleteInterruptKey_Click" Width="18" Height="18" Padding="0" Margin="5,0,0,0" Background="#A84242" BorderBrush="#D86666"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DockPanel>
+                </Grid>
+            </Border>
+            </Grid>
+            <local:SkillLibraryPanel x:Name="LibraryPanel" Grid.Column="1" Width="330" Margin="9,0,0,0" Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</Window>

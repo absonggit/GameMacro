@@ -1,0 +1,81 @@
+<UserControl x:Class="GameMacro.App.SkillLibraryPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GameMacro.App.Converters"
+             Background="#1A1E26" Foreground="#F4F7FC">
+    <UserControl.Resources>
+        <converters:Base64PngImageConverter x:Key="Base64PngImageConverter"/>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#2B3340"/>
+            <Setter Property="Foreground" Value="#F4F7FC"/>
+            <Setter Property="BorderBrush" Value="#3A4556"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+    </UserControl.Resources>
+    <Border BorderBrush="#3B4658" BorderThickness="1" CornerRadius="9" Padding="9">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="×" Width="28" Height="28" Padding="0" Click="Close_Click"/>
+                <TextBlock Text="技能库" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </DockPanel>
+            <Grid Grid.Row="1" Margin="0,8,0,7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="CategoryCombo" DisplayMemberPath="Name" MinWidth="120"
+                          SelectionChanged="CategoryCombo_SelectionChanged"/>
+                <Button Grid.Column="1" Content="＋" ToolTip="新建职业" Click="NewCategory_Click"/>
+                <Button Grid.Column="2" Content="改" ToolTip="重命名职业" Click="RenameCategory_Click"/>
+                <Button Grid.Column="3" Content="删" ToolTip="删除空职业" Click="DeleteCategory_Click"/>
+            </Grid>
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl x:Name="TemplatesList">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="82" Height="96" Background="#252B35" BorderBrush="#3B4658"
+                                    BorderThickness="1" CornerRadius="6" Margin="3" Padding="5"
+                                    MouseMove="Template_MouseMove" MouseLeftButtonDown="Template_MouseLeftButtonDown">
+                                <Grid>
+                                    <Grid.RowDefinitions><RowDefinition Height="68"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                    <Border Width="64" Height="64" Background="#10141B" BorderBrush="#455267" BorderThickness="1" CornerRadius="4">
+                                        <Image Source="{Binding PreviewPng, Converter={StaticResource Base64PngImageConverter}}" Stretch="UniformToFill"/>
+                                    </Border>
+                                    <Border Background="#B5162A3B" CornerRadius="3" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5,2">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers><DataTrigger Binding="{Binding IsAdded}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="已添加" Foreground="#8CCBFF" FontWeight="SemiBold"/>
+                                    </Border>
+                                    <Button Grid.Row="1" Content="删除" FontSize="11" Padding="2,0" Click="DeleteTemplate_Click"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <StackPanel Grid.Row="3" Margin="0,8,0,0">
+                <TextBlock Text="拖到左侧方案；双击也可添加" Foreground="#AEB8C8" Margin="2,0,2,5"/>
+                <UniformGrid Columns="2">
+                    <Button Content="扫描技能来源" Background="#4C8DFF" Click="BatchScan_Click"/>
+                    <Button Content="框选单个技能" Background="#4C8DFF" Click="SingleCapture_Click"/>
+                </UniformGrid>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
